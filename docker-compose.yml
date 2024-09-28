@@ -9,7 +9,7 @@ services:
       - internal-network
       - internet
     ports:
-      - "3000:3000"
+      - "4000:4000"
     depends_on:
       - database
     env_file:
@@ -34,7 +34,7 @@ services:
     networks:
       - internet
     ports:
-      - "8000:80"
+      - "8081:80"
     restart: unless-stopped
 
 networks:
