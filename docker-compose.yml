@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    image: web-plus-docker-and-compose-backend
+    networks:
+      - internal-network
+      - internet
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    env_file:
+      - backend/.env
+    restart: unless-stopped
+
+  database:
+    image: postgres:13
+    volumes:
+      - "./postgres_data:/data/postgres"
+    networks:
+      - internal-network
+    env_file:
+      - backend/.env
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    image: web-plus-docker-and-compose-frontend
+    networks:
+      - internet
+    ports:
+      - "8000:80"
+    restart: unless-stopped
+
+networks:
+  internal-network:
+    driver: bridge
+    internal: true
+  internet:
+    driver: bridge
+
+volumes:
+  postgres_data:
